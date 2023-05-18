@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -82,16 +83,34 @@ fun TopItem() {
 fun CenterItem(){
 
     var step = remember { mutableStateOf(0) }
-
+    var stepCounter = CalcStep(step.value)
     Column(modifier = Modifier
         .fillMaxSize()
         .wrapContentSize(Alignment.Center)
-        .clickable { if(step.value > 2) step.value = 0 else ++step.value  },
+        .clickable
+        {
+            if (step.value > 4)
+                step.value = 0
+            else if(step.value in 1..3) step.value = (1..4).random()
+            else ++step.value
+        },
         horizontalAlignment = Alignment.CenterHorizontally){
         ImageItem(step.value)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Text(text = GetText(step.value), fontSize = 18.sp)
     }
+}
+
+@Composable
+fun CalcStep(step: Int) : Int {
+
+    var counter = step
+
+    if (counter > 4)
+        counter = 0
+    else if(counter in 1..3) counter = (1..3).random()
+
+    return counter
 }
 
 @Composable
@@ -112,9 +131,9 @@ fun ImageItem(step: Int) {
 fun GetImage(index: Int): Painter =
     when(index){
         0 -> painterResource(R.drawable.lemon_tree)
-        1 -> painterResource(R.drawable.lemon_squeeze)
-        2 -> painterResource(R.drawable.lemon_drink)
-        3 -> painterResource(R.drawable.lemon_restart)
+        in 1..3 -> painterResource(R.drawable.lemon_squeeze)
+        4 -> painterResource(R.drawable.lemon_drink)
+        5 -> painterResource(R.drawable.lemon_restart)
         else -> throw Exception("Неверный индекс")
     }
 
@@ -122,9 +141,9 @@ fun GetImage(index: Int): Painter =
 fun GetText(index: Int): String =
     when(index){
         0 -> stringResource(R.string.lemon_tree)
-        1 -> stringResource(R.string.lemon)
-        2 -> stringResource(R.string.lemonade)
-        3 -> stringResource(R.string.lemon_restart)
+        in 1..3 -> stringResource(R.string.lemon)
+        4 -> stringResource(R.string.lemonade)
+        5 -> stringResource(R.string.lemon_restart)
         else -> throw Exception("Неверный индекс")
     }
 
@@ -132,9 +151,9 @@ fun GetText(index: Int): String =
 fun GetDescriptionText(index: Int): String =
     when(index){
         0 -> stringResource(R.string.lemon_tree_description)
-        1 -> stringResource(R.string.lemon_description)
-        2 -> stringResource(R.string.lemonade_description)
-        3 -> stringResource(R.string.lemon_restart_description)
+        in 1..3 -> stringResource(R.string.lemon_description)
+        4 -> stringResource(R.string.lemonade_description)
+        5 -> stringResource(R.string.lemon_restart_description)
         else -> throw Exception("Неверный индекс")
     }
 
