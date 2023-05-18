@@ -89,7 +89,11 @@ fun CenterItem(){
 
 @Composable
 private fun ImageItem() {
-    Box(modifier = Modifier.background(Color.Cyan, shape = RoundedCornerShape(5))) {
+    Box(modifier = Modifier.background(Color(195, 236, 210), shape = RoundedCornerShape(10))
+        .size(250.dp, 250.dp),
+        contentAlignment = Alignment.Center
+    )
+    {
         Image(
             painter = painterResource(R.drawable.lemon_tree),
             contentDescription = stringResource(R.string.lemon_tree_description)
